@@ -1,7 +1,7 @@
 public class OS {
     String nomeCliente;
     Veiculo veiculoCliente;
-    int numServicos;
+    int numServicos = 20; // Por enquanto o número será fixado em 20, pq o array não limitava ao numero de servicos de outra forma
     Servico[] servicos = new Servico[numServicos];
 
     public OS(String nomeCliente, Veiculo veiculoCliente, int numServicos) {
@@ -10,18 +10,24 @@ public class OS {
         this.numServicos = numServicos;
     }
 
+    // (Falta implementar)
     public void exibirResum() { // Deve exibir resumo incluindo os serviços associados
         System.out.println();
     }
 
+    // (Funcionando) Calcula o valor total dos servicos adicionados
     public double calcValorTotal() {
         double valorTotal = 0;
-
+        for (int i = 0; i < numServicos; i++) {
+            valorTotal = valorTotal + servicos[i].valor;
+        }
         return valorTotal;
     }
 
-    public void addServicos() {
-
+    // (Funcionando) Adiciona o servico ao array da OS
+    public void addServico(Servico servicoEscolhido, int posicaoDoServico) {
+            servicos[posicaoDoServico] = servicoEscolhido;
+        
     }
 
     /*
