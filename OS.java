@@ -1,11 +1,11 @@
 public class OS {
-    String nomeCli;
+    String nomeCliente;
     Veiculo veiculoCliente;
     int numServicos;
     Servico[] servicos = new Servico[numServicos];
 
-    public OS(String nomeCli, Veiculo veiculoCliente, int numServicos) {
-        this.nomeCli = nomeCli;
+    public OS(String nomeCliente, Veiculo veiculoCliente, int numServicos) {
+        this.nomeCliente = nomeCliente;
         this.veiculoCliente = veiculoCliente;
         this.numServicos = numServicos;
     }

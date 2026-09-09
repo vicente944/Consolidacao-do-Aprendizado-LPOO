@@ -1,5 +1,6 @@
 class Main {
     public static void main(String[] args) {
+        // Definição dos serviços disponíveis
         Servico trocaOleo = new Servico("Troca de óleo do motor", 180.00);
         Servico alinhamento = new Servico("Alinhamento de direção", 90.00);
         Servico balanceamento = new Servico("Balanceamento de 4 rodas", 80.00);
