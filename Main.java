@@ -6,9 +6,73 @@ class Main {
         Servico balanceamento = new Servico("Balanceamento de 4 rodas", 80.00);
         Servico trocaPastilhas = new Servico("Troca de pastilhas de freio", 250.00);
         Servico revisaoEletrica = new Servico("Revisão elétrica completa", 150.00);
+
+        System.out.println("--- Vika Car Services ---");
+
+        int i = 0;
+        // Essa parte foi pensada para estar dentro de um loop while -> while (i != 5)
+        System.out.println("1. Cadastrar Ordem de Servico\n2. Listar Ordens de Servico\n3. Buscar ordens pelo inicio do nome do cliente\n4. Buscar ordens pelo inicio da placa do carro\n5. Sair");
         
-        Veiculo veiculo1 = new Veiculo("placa1", "modelo1", 2025);
-        OS ordem1 = new OS("Cliente1", veiculo1, 3);
+        i = 1; // simula a entrada do usuario para a primeira opção
+        System.out.println("Escolha um servico: " + i);
+        System.out.println();
+
+        // Cadastrar OS
+        if (i == 1) {
+            // Dados do Veiculo
+            System.out.println("Insira os dados do veiculo: ");
+            Veiculo veiculo1 = new Veiculo("placa1", "modelo1", 2025);
+            System.out.println("Placa: " + veiculo1.placa + "\nModelo: " + veiculo1.modelo + "\nAno: " + veiculo1.ano);
+            System.out.println();
+            
+            // Dados do Cliente
+            System.out.println("Insira o nome do cliente e quantos servicos serao realizados: ");
+            OS os1 = new OS("Cliente1", veiculo1, 3);
+            System.out.println("Nome do Cliente: " + os1.nomeCliente + "\nNumero de Servicos: " + os1.numServicos);
+            System.out.println();
+
+            // Escolha dos Servicos
+            Servico.exibirInfo();
+            System.out.println();
+
+            // Servicos escolhidos:
+            os1.addServico(trocaOleo, 0);
+            os1.addServico(balanceamento, 1);
+            os1.addServico(revisaoEletrica, 2);
+
+            // Valor total
+            System.out.println("Valor total dos servicos escolhidos: R$ " + os1.calcValorTotal());
+            System.out.println();
+
+
+            // Mensagem de ordem cadastrada
+            System.out.println("Ordem cadastrada com sucesso!");
+
+
+
+        }
+
+        else if (i == 2) {
+            
+        }
+
+        else if (i == 3) {
+            
+        }
+        
+        else if (i == 4) {
+            
+        }
+
+        else if (i == 5) {
+            System.out.println("Fechando o programa...");
+        }
+        
+        else
+            System.out.println("Acao invalida! Digite um dos numeros acima.");
+
+        
+        
 
 
 
