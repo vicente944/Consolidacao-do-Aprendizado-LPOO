@@ -1,5 +1,14 @@
+import java.util.Scanner;
+
 class Main {
     public static void main(String[] args) {
+        // Leitor do teclado
+        Scanner leitor = new Scanner(System.in);
+
+        // Instancia do gerenciador para guardar as ordens
+        GerencOrdens gerenciador = new GerencOrdens();
+        int posOrdem = 0; // Controla a proxima posicao livre no array de ordens
+
         // Definição dos serviços disponíveis
         Servico trocaOleo = new Servico("Troca de óleo do motor", 180.00);
         Servico alinhamento = new Servico("Alinhamento de direção", 90.00);
@@ -10,13 +19,21 @@ class Main {
         System.out.println("--- Vika Car Services ---");
 
         int i = 0;
+
+
+        //loop interativo para o menu de opções
+        while (i != 5) {
         // Essa parte foi pensada para estar dentro de um loop while -> while (i != 5)
         System.out.println("1. Cadastrar Ordem de Servico\n2. Listar Ordens de Servico\n3. Buscar ordens pelo inicio do nome do cliente\n4. Buscar ordens pelo inicio da placa do carro\n5. Sair");
+        System.out.print("Escolha uma opcao: ");
         
-        i = 1; // simula a entrada do usuario para a primeira opção
-        System.out.println("Escolha um servico: " + i);
-        System.out.println();
 
+        // Le a opcao digitada pelo usuario no console
+            i = leitor.nextInt();
+            leitor.nextLine(); // Limpa a quebra de linha pendente no buffer
+            System.out.println();
+
+     
         // Cadastrar OS
         if (i == 1) {
             // Dados do Veiculo
@@ -44,6 +61,10 @@ class Main {
             System.out.println("Valor total dos servicos escolhidos: R$ " + os1.calcValorTotal());
             System.out.println();
 
+            // Salva a ordem criada dentro do Gerenciador de Ordens
+                gerenciador.addOrdem(os1, posOrdem);
+                posOrdem++;
+
 
             // Mensagem de ordem cadastrada
             System.out.println("Ordem cadastrada com sucesso!");
@@ -53,14 +74,24 @@ class Main {
         }
 
         else if (i == 2) {
+            // Listar todas as ordens cadastradas
+                gerenciador.listarOrdens();
             
         }
 
         else if (i == 3) {
+            // Buscar ordens por inicio do nome do cliente
+                System.out.print("Digite o inicio do nome do cliente: ");
+                String nomeBusca = leitor.nextLine();
+                gerenciador.buscarOrdensNome(nomeBusca);
             
         }
         
         else if (i == 4) {
+            // Buscar ordens por inicio do nome do cliente
+                System.out.print("Digite o inicio do nome do cliente: ");
+                String nomeBusca = leitor.nextLine();
+                gerenciador.buscarOrdensNome(nomeBusca);
             
         }
 
@@ -68,8 +99,13 @@ class Main {
             System.out.println("Fechando o programa...");
         }
         
-        else
+        else{
             System.out.println("Acao invalida! Digite um dos numeros acima.");
+        }
+
+
+        } // Fechamento do while (i != 5)
+
 
         
         

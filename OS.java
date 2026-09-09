@@ -12,8 +12,19 @@ public class OS {
 
     // (Falta implementar)
     public void exibirResum() { // Deve exibir resumo incluindo os serviços associados
-        System.out.println();
+   
+        System.out.println("Cliente:"+ this.nomeCliente);
+        System.out.println("Veículo: " + this.veiculoCliente.modelo + "Placa: " + this.veiculoCliente.placa);
+        System.out.println("Serviços realizados: ");
+        for (int i=0; i< this.numServicos; i++){
+            if (this.servicos[i] !=null){
+                System.out.println("-"+ this.servicos[i].descricao+ ":R$" + this.servicos[i].valor);
+             } 
+        }
+
+        System.out.println("Valor total: R$" + this.calcValorTotal());
     }
+
 
     // (Funcionando) Calcula o valor total dos servicos adicionados
     public double calcValorTotal() {
