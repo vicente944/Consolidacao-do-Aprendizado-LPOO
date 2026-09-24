@@ -1,75 +1,65 @@
 public class GerencOrdens {
-    OS[] ordensServico = new OS[100];
+    private OrdemServico[] ordens;
+    private int qtdOrdens;
 
-    // (Falta testar) Adiciona ordem de servico ao array do Gerenciador de Ordens
+    public GerencOrdens(int capacidade) {
+        this.ordens = new OrdemServico[capacidade];
+        this.qtdOrdens = 0;
+    }
+
     //(Agora) Adiciona uma ordem de serviço em uma posição específica do array
-    public void addOrdem(OS ordemEscolhida, int posicaoDaOrdem) {
-        
-        if (posicaoDaOrdem >= 0 && posicaoDaOrdem < ordensServico.length) {
-            ordensServico[posicaoDaOrdem] = ordemEscolhida;
-        } else {
-            System.out.println("Erro: Limite de armazenamento de ordens atingido!");
+    public void addOrdem(OrdemServico ordem) {
+        if (qtdOrdens < ordens.length) {
+            ordens[qtdOrdens] = ordem;
+            qtdOrdens++;
+            System.out.println("Ordem cadastrada!");
         }
+        else
+            System.out.println("Erro: Limite de armazenamento de ordens atingido.");
     }
 
     public void listarOrdens() {
-      boolean encontrou = false;
+        if (qtdOrdens == 0) {
+            System.out.println("Nenhuma ordem cadastrada ate o momento.");
+            return;
+        }
+
         System.out.println("\n===== LISTA DE ORDENS DE SERVICO =====");
-
-        for (int i = 0; i < ordensServico.length; i++) {
-            if (ordensServico[i] != null) {
-                ordensServico[i].exibirResum();
-                encontrou = true;
-            }
+        for (int i = 0; i < qtdOrdens; i++) {
+            System.out.println("\n --- Ordem nº" + (i + 1) + " ---");
+            ordens[i].exibirResumo();
         }
-
-        if (!encontrou) {
-            System.out.println("Nenhuma ordem de servico cadastrada ate o momento.");
-        }
-
     }
 
     public void buscarOrdensNome(String inicioNome) {
-       boolean encontrou = false;
+        boolean encontrou = false;
         System.out.println("\n===== BUSCA POR NOME: \"" + inicioNome + "\" =====");
-
-        for (int i = 0; i < ordensServico.length; i++) {
-            if (ordensServico[i] != null) {
-                String nomeAtual = ordensServico[i].nomeCliente.toLowerCase();
-                String termoBusca = inicioNome.toLowerCase();
-
-                if (nomeAtual.startsWith(termoBusca)) {
-                    ordensServico[i].exibirResum();
-                    encontrou = true;
-                }
+        for (int i = 0; i < qtdOrdens; i++) {
+            if (ordens[i].getNomeCliente().toLowerCase().startsWith(inicioNome.toLowerCase())) {
+                System.out.println("\n --- Ordem nº" + (i + 1) + " ---");
+                ordens[i].exibirResumo();
+                System.out.println();
+                encontrou = true;
             }
-        } // Fechamento correto do for
-
-        if (!encontrou) {
-            System.out.println("Nenhuma ordem encontrada para clientes que comecam com: " + inicioNome);
         }
-
+        if (!encontrou)
+            System.out.println("Nenhuma ordem encontrada para clientes que comecam com: " + inicioNome);
     }
 
 
     public void buscarOrdensPlaca(String placaBuscada) {
-
         boolean encontrou = false;
         System.out.println("\n===== BUSCA POR PLACA: \"" + placaBuscada + "\" =====");
-
-        for (int i = 0; i < ordensServico.length; i++) {
-            if (ordensServico[i] != null) {
-                // equalsIgnoreCase compara o texto ignorando se as letras são maiúsculas ou minúsculas
-                if (ordensServico[i].veiculoCliente.placa.equalsIgnoreCase(placaBuscada)) {
-                    ordensServico[i].exibirResum();
-                    encontrou = true;
-                }
+        for (int i = 0; i < qtdOrdens; i++) {
+            if (ordens[i].getVeiculoCliente().getPlaca().equalsIgnoreCase(placaBuscada)) {
+                System.out.println("\n --- Ordem nº" + (i + 1) + " ---");
+                ordens[i].exibirResumo();
+                System.out.println();
+                encontrou = true;
             }
         }
-
         if (!encontrou) {
             System.out.println("Nenhuma ordem encontrada com a placa: " + placaBuscada);
         }
-        
     }
 }

@@ -1,195 +1,109 @@
 import java.util.Scanner;
 
-class Main {
+public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static String lerString() {
+        return scanner.nextLine().trim();
+    }
+
+    public static int lerInteiro() {
+        return Integer.parseInt(scanner.nextLine().trim());
+    }
+
+    public static double lerDecimal() {
+        return Double.parseDouble(scanner.nextLine().trim());
+    }
+
     public static void main(String[] args) {
-        // Leitor do teclado
-        Scanner leitor = new Scanner(System.in);
+        GerencOrdens gerenciador = new GerencOrdens(100);
 
-        // Instancia do gerenciador para guardar as ordens
-        GerencOrdens gerenciador = new GerencOrdens();
-        int posOrdem = 0; // Controla a proxima posicao livre no array de ordens
+        // Lista fixa de serviços disponíveis
+        Servico[] servicosDisponiveis = {
+            new Servico("Troca de óleo", 180.00),
+            new Servico("Alinhamento", 100.00),
+            new Servico("Balanceamento", 120.00),
+            new Servico("Troca de pastilhas de freio", 250.00),
+            new Servico("Revisão elétrica", 150.00)
+        };
 
-        // Definição dos serviços disponíveis
-        Servico trocaOleo = new Servico("Troca de óleo do motor", 180.00);
-        Servico alinhamento = new Servico("Alinhamento de direção", 90.00);
-        Servico balanceamento = new Servico("Balanceamento de 4 rodas", 80.00);
-        Servico trocaPastilhas = new Servico("Troca de pastilhas de freio", 250.00);
-        Servico revisaoEletrica = new Servico("Revisão elétrica completa", 150.00);
+        int opcao = 0;
 
-        System.out.println("--- Vika Car Services ---");
+        while (opcao != 5) {
+            System.out.println("\n=== VIKA CAR SERVICES ===");
+            System.out.println("1. Cadastrar ordem de serviço");
+            System.out.println("2. Listar ordens de serviço");
+            System.out.println("3. Buscar ordens pelo início do nome do cliente");
+            System.out.println("4. Buscar ordem pela placa do veículo");
+            System.out.println("5. Sair");
+            System.out.print("Escolha uma opção: ");
 
-        int i = 0;
+            opcao = lerInteiro();
 
+            switch (opcao) {
+                case 1:
+                    System.out.print("\nNome do cliente: ");
+                    String nomeCliente = lerString();
 
-        //loop interativo para o menu de opções
-        while (i != 5) {
-        // Essa parte foi pensada para estar dentro de um loop while -> while (i != 5)
-        System.out.println("1. Cadastrar Ordem de Servico\n2. Listar Ordens de Servico\n3. Buscar ordens pelo inicio do nome do cliente\n4. Buscar ordens pelo inicio da placa do carro\n5. Sair");
-        System.out.print("Escolha uma opcao: ");
-        
+                    System.out.print("Placa do veículo: ");
+                    String placa = lerString();
 
-        // Le a opcao digitada pelo usuario no console
-            i = leitor.nextInt();
-            leitor.nextLine(); // Limpa a quebra de linha pendente no buffer
-            System.out.println();
+                    System.out.print("Modelo: ");
+                    String modelo = lerString();
 
-     
-        // Cadastrar OS
-        if (i == 1) {
-            // Dados do Veiculo
-            System.out.println("Insira os dados do veiculo: ");
-            Veiculo veiculo1 = new Veiculo("placa1", "modelo1", 2025);
-            System.out.println("Placa: " + veiculo1.placa + "\nModelo: " + veiculo1.modelo + "\nAno: " + veiculo1.ano);
-            System.out.println();
-            
-            // Dados do Cliente
-            System.out.println("Insira o nome do cliente e quantos servicos serao realizados: ");
-            OS os1 = new OS("Cliente1", veiculo1, 3);
-            System.out.println("Nome do Cliente: " + os1.nomeCliente + "\nNumero de Servicos: " + os1.numServicos);
-            System.out.println();
+                    System.out.print("Ano: ");
+                    int ano = lerInteiro();
 
-            // Escolha dos Servicos
-            Servico.exibirInfo();
-            System.out.println();
+                    Veiculo veiculo = new Veiculo(placa, modelo, ano);
+                    OrdemServico ordem = new OrdemServico(nomeCliente, veiculo, 10);
 
-            // Servicos escolhidos:
-            os1.addServico(trocaOleo, 0);
-            os1.addServico(balanceamento, 1);
-            os1.addServico(revisaoEletrica, 2);
+                    String continuar = "S";
+                    while (continuar.equalsIgnoreCase("S")) {
+                        System.out.println("\nServiços disponíveis:");
+                        for (int i = 0; i < servicosDisponiveis.length; i++) {
+                            System.out.print((i + 1) + ". ");
+                            servicosDisponiveis[i].exibirInfo();
+                        }
 
-            // Valor total
-            System.out.println("Valor total dos servicos escolhidos: R$ " + os1.calcValorTotal());
-            System.out.println();
+                        System.out.print("Escolha um serviço (número): ");
+                        int opcaoServico = lerInteiro();
 
-            // Salva a ordem criada dentro do Gerenciador de Ordens
-                gerenciador.addOrdem(os1, posOrdem);
-                posOrdem++;
+                        if (opcaoServico >= 1 && opcaoServico <= servicosDisponiveis.length) {
+                            ordem.addServico(servicosDisponiveis[opcaoServico - 1]);
+                        } else {
+                            System.out.println("Opção de serviço inválida!");
+                        }
 
+                        System.out.print("Deseja adicionar outro serviço? (S/N): ");
+                        continuar = lerString();
+                    }
 
-            // Mensagem de ordem cadastrada
-            System.out.println("Ordem cadastrada com sucesso!");
+                    gerenciador.addOrdem(ordem);
+                    break;
 
+                case 2:
+                    gerenciador.listarOrdens();
+                    break;
 
+                case 3:
+                    System.out.print("\nDigite o início do nome do cliente: ");
+                    String inicioNome = lerString();
+                    gerenciador.buscarOrdensNome(inicioNome);
+                    break;
 
+                case 4:
+                    System.out.print("\nDigite a placa do veículo: ");
+                    String placaBusca = lerString();
+                    gerenciador.buscarOrdensPlaca(placaBusca);
+                    break;
+
+                case 5:
+                    System.out.println("Encerrando o programa...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+            }
         }
-
-        else if (i == 2) {
-            // Listar todas as ordens cadastradas
-                gerenciador.listarOrdens();
-            
-        }
-
-        else if (i == 3) {
-            // Buscar ordens por inicio do nome do cliente
-                System.out.print("Digite o inicio do nome do cliente: ");
-                String nomeBusca = leitor.nextLine();
-                gerenciador.buscarOrdensNome(nomeBusca);
-            
-        }
-        
-        else if (i == 4) {
-            // Buscar ordens por inicio do nome do cliente
-                System.out.print("Digite o inicio do nome do cliente: ");
-                String nomeBusca = leitor.nextLine();
-                gerenciador.buscarOrdensNome(nomeBusca);
-            
-        }
-
-        else if (i == 5) {
-            System.out.println("Fechando o programa...");
-        }
-        
-        else{
-            System.out.println("Acao invalida! Digite um dos numeros acima.");
-        }
-
-
-        } // Fechamento do while (i != 5)
-
-
-        
-        
-
-
-
-
-
-        /* Código antido - Consolidação 1
-        System.out.println("---------- Veiculo 1 ");
-        Veiculo carro1 = new Veiculo();
-
-        carro1.placa = "placalegal";
-        carro1.modelo = "modeloshow";
-        carro1.ano = 2021;
-
-        System.out.println("----- Informacoes do veiculo: ");
-        carro1.calcIdade(2026);
-        carro1.exibirInfo();
-
-        System.out.println(""); // Linha extra
-        //Testes da classe OS
-        OS serv1 = new OS();
-
-        serv1.nomeCli = "Junior";
-        serv1.descServ = "Descricao errada";
-        serv1.valServ = 1000.55;
-        serv1.veiculoCliente = carro1;
-
-        System.out.println("----- Resumo do servico antes do desconto");
-        serv1.exibirResum(); // Resumo antes do desconto
-        
-        System.out.println(""); // Linha extra
-
-        System.out.println("----- Aplicacao do desconto");
-        serv1.aplicDesc(210); // Desconto propositalmente invalido!!!
-        
-        System.out.println(""); // Linha extra
-        
-        System.out.println("----- Resumo do servico depois do desconto");
-        serv1.exibirResum(); // Resumo depois do desconto
-        
-        System.out.println(""); // Linha extra
-
-        System.out.println("---------- Depois que foi verificado o registro incorreto do Veiculo 1, trocar para Veiculo 2 ----------");
-
-        System.out.println(""); // Linha extra
-
-        System.out.println("---------- Veiculo 2 ");
-        Veiculo carro2 = new Veiculo();
-
-        carro2.placa = "placamassa";
-        carro2.modelo = "modelotop";
-        carro2.ano = 2023;
-
-        System.out.println("----- Informacoes do veiculo: ");
-        carro2.calcIdade(2026);
-        carro2.exibirInfo();
-
-        System.out.println(""); // Linha extra
-        //Testes da classe OS
-
-        serv1.nomeCli = "Major";
-        serv1.descServ = "Descricao certa";
-        serv1.valServ = 7500.99;
-        serv1.veiculoCliente = carro2;
-
-        System.out.println("----- Resumo do servico antes do desconto");
-        serv1.exibirResum(); // Resumo antes do desconto
-        
-        System.out.println(""); // Linha extra
-
-        System.out.println("----- Aplicacao do desconto");
-        serv1.aplicDesc(15);
-        
-        System.out.println(""); // Linha extra
-        
-        System.out.println("----- Resumo do servico depois do desconto");
-        
-        serv1.exibirResum(); // Resumo depois do desconto
-
-        System.out.println(""); // Linha extra
-        System.out.println(""); // Linha extra
-        System.out.println("Autores: \nVicente Souza\nKauan Moura");*/
-    } 
+    }
 }
-
