@@ -21,10 +21,13 @@ public class Main {
         // Lista fixa de serviços disponíveis
         Servico[] servicosDisponiveis = {
             new Servico("Troca de óleo", 180.00),
-            new Servico("Alinhamento", 100.00),
             new Servico("Balanceamento", 120.00),
-            new Servico("Troca de pastilhas de freio", 250.00),
-            new Servico("Revisão elétrica", 150.00)
+            new ServicoComPecas("Troca de pastilhas de freio", 150.00, 200.00),
+            new ServicoComPecas("Troca de correia dentada", 180.00, 250.00),
+            new ServicoPorHora("Alinhamento técnico", 50.00, 1, 50.00),
+            new ServicoPorHora("Revisão elétrica", 80.00, 2, 100.00),
+            new ServicoDiagnostico("Diagnóstico eletrônico", 120.00, false),
+            new ServicoDiagnostico("Diagnóstico de suspensão", 100.00, true)
         };
 
         int opcao = 0;
@@ -60,30 +63,123 @@ public class Main {
 
                     String continuar = "S";
                     while (continuar.equalsIgnoreCase("S")) {
-                        System.out.println("\nServiços disponíveis:");
-                        for (int i = 0; i < servicosDisponiveis.length; i++) {
-                            System.out.print((i + 1) + ". ");
-                            servicosDisponiveis[i].exibirInfo();
+                        System.out.println("\n=== TIPO DE SERVIÇO ===");
+                        System.out.println("1. Serviço comum");
+                        System.out.println("2. Serviço com peças");
+                        System.out.println("3. Serviço por hora");
+                        System.out.println("4. Diagnóstico");
+                        System.out.print("Escolha uma opção: ");
+                        int tipo = lerInteiro();
+
+                        if (tipo < 1 || tipo > 4) {
+                            System.out.println("Opção inválida! Tente novamente.");
+                        } 
+                        else {
+                            System.out.print("Descrição do serviço: ");
+                            String desc = lerString();
+
+                            System.out.print("Valor base: R$ ");
+                            double vBase = lerDecimal();
+
+                            Servico novoServico = null;
+
+                            switch (tipo) {
+                                case 1:
+                                    novoServico = new Servico(desc, vBase);
+                                    break;
+
+                                case 2:
+                                    System.out.print("Valor das peças: R$ ");
+                                    double vPecas = lerDecimal();
+                                    novoServico = new ServicoComPecas(desc, vBase, vPecas);
+                                    break;
+
+                                case 3:
+                                    System.out.print("Horas trabalhadas: ");
+                                    int horas = lerInteiro();
+                                    System.out.print("Valor por hora: R$ ");
+                                    double vHora = lerDecimal();
+                                    novoServico = new ServicoPorHora(desc, vBase, horas, vHora);
+                                    break;
+
+                                case 4:
+                                    System.out.print("O cliente realizou o reparo? (S/N): ");
+                                    boolean rep = lerString().equalsIgnoreCase("S");
+                                    novoServico = new ServicoDiagnostico(desc, vBase, rep);
+                                    break;
+                            }
+
+                            if (novoServico != null) {
+                                ordem.addServico(novoServico);
+                                System.out.println("Serviço adicionado com sucesso!");
+                            }
                         }
-
-                        System.out.print("Escolha um serviço (número): ");
-                        int opcaoServico = lerInteiro();
-
-                        if (opcaoServico >= 1 && opcaoServico <= servicosDisponiveis.length) {
-                            ordem.addServico(servicosDisponiveis[opcaoServico - 1]);
-                        } else {
-                            System.out.println("Opção de serviço inválida!");
-                        }
-
-                        System.out.print("Deseja adicionar outro serviço? (S/N): ");
+                        System.out.print("\nDeseja adicionar outro serviço a esta ordem? (S/N): ");
                         continuar = lerString();
                     }
-
                     gerenciador.addOrdem(ordem);
                     break;
                 
                 case 2:
-                    System.out.println();
+                    if (gerenciador.getQtdOrdens() == 0) {
+                        System.out.println("\nNenhuma ordem cadastrada! Crie uma ordem primeiro.");
+                        break;
+                    }
+
+                    gerenciador.listarOrdens();
+                    System.out.print("\nInforme o número da ordem que deseja alterar (1 a " + gerenciador.getQtdOrdens() + "): ");
+                    int numOrdem = lerInteiro();
+
+                    OrdemServico ordemSelecionada = gerenciador.buscarOrdemPorIndice(numOrdem - 1);
+                    if (ordemSelecionada == null) {
+                        System.out.println("Ordem inválida!");
+                        break;
+                    }
+
+                    System.out.println("\n=== TIPO DE SERVIÇO ===");
+                    System.out.println("1 - Serviço comum");
+                    System.out.println("2 - Serviço com peças");
+                    System.out.println("3 - Serviço por hora");
+                    System.out.println("4 - Diagnóstico");
+                    System.out.print("Escolha o tipo: ");
+                    int tipo = lerInteiro();
+
+                    System.out.print("Descrição do serviço: ");
+                    String desc = lerString();
+                    System.out.print("Valor base: R$ ");
+                    double vBase = lerDecimal();
+
+                    Servico novoServico = null;
+
+                    switch (tipo) {
+                        case 1:
+                            novoServico = new Servico(desc, vBase);
+                            break;
+                        case 2:
+                            System.out.print("Valor das peças: R$ ");
+                            double vPecas = lerDecimal();
+                            novoServico = new ServicoComPecas(desc, vBase, vPecas);
+                            break;
+                        case 3:
+                            System.out.print("Horas trabalhadas: ");
+                            int horas = lerInteiro();
+                            System.out.print("Valor por hora: R$ ");
+                            double vHora = lerDecimal();
+                            novoServico = new ServicoPorHora(desc, vBase, horas, vHora);
+                            break;
+                        case 4:
+                            System.out.print("O cliente realizou o reparo? (S/N): ");
+                            boolean rep = lerString().equalsIgnoreCase("S");
+                            novoServico = new ServicoDiagnostico(desc, vBase, rep);
+                            break;
+                        default:
+                            System.out.println("Tipo inválido!");
+                    }
+
+                    if (novoServico != null) {
+                        ordemSelecionada.addServico(novoServico);
+                        System.out.println("Serviço adicionado com sucesso!");
+                    }
                     break;
 
                 case 3:
