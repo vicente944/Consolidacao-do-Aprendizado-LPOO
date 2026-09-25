@@ -61,18 +61,4 @@ public class OrdemServico {
             System.out.println("Erro: Limite de serviços para esta ordem foi atingido.");
         }
     }
-
-    /*
-    Aplicar desconto - Em Standby
-    public void aplicDesc(double desconto) {
-        double margemInf = 0.00;
-        double margemSup = 100.00;
-        if (margemInf <= desconto && desconto <= margemSup) {
-        System.out.println("Valor do desconto: " + (desconto / 100 * valServ));
-        valServ = valServ - (desconto / 100 * valServ);
->>>>>>> ef933c7 (Implementa subclasses de Servico e suporte a polimorfismo (Trilha A))
-        }
-        else 
-            System.out.println("Erro: Limite de serviços para esta ordem foi atingido.");
-    }*/
 }
