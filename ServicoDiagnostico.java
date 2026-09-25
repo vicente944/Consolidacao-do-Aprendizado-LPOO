@@ -1,9 +1,9 @@
-
 /*
  * Observação: Na Consolidação 3, Kauan Victor não teve acesso ao Classroom
  * devido a uma ausência por motivos de saúde. Apesar disso, participou do
  * desenvolvimento e contribuiu para a implementação deste projeto.
  */
+
 public class ServicoDiagnostico extends Servico {
     private boolean possuiReparo;
 
