@@ -7,7 +7,6 @@ public class GerencOrdens {
         this.qtdOrdens = 0;
     }
 
-    //(Agora) Adiciona uma ordem de serviço em uma posição específica do array
     public void addOrdem(OrdemServico ordem) {
         if (qtdOrdens < ordens.length) {
             ordens[qtdOrdens] = ordem;
@@ -45,7 +44,6 @@ public class GerencOrdens {
         if (!encontrou)
             System.out.println("Nenhuma ordem encontrada para clientes que comecam com: " + inicioNome);
     }
-
 
     public void buscarOrdensPlaca(String placaBuscada) {
         boolean encontrou = false;

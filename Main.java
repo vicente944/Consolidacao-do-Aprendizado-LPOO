@@ -29,13 +29,14 @@ public class Main {
 
         int opcao = 0;
 
-        while (opcao != 5) {
+        while (opcao != 6) {
             System.out.println("\n=== VIKA CAR SERVICES ===");
             System.out.println("1. Cadastrar ordem de serviço");
-            System.out.println("2. Listar ordens de serviço");
-            System.out.println("3. Buscar ordens pelo início do nome do cliente");
-            System.out.println("4. Buscar ordem pela placa do veículo");
-            System.out.println("5. Sair");
+            System.out.println("2. Adicionar serviço à ordem");
+            System.out.println("3. Listar ordens de serviço");
+            System.out.println("4. Buscar ordens pelo início do nome do cliente");
+            System.out.println("5. Buscar ordem pela placa do veículo");
+            System.out.println("6. Sair");
             System.out.print("Escolha uma opção: ");
 
             opcao = lerInteiro();
@@ -55,7 +56,7 @@ public class Main {
                     int ano = lerInteiro();
 
                     Veiculo veiculo = new Veiculo(placa, modelo, ano);
-                    OrdemServico ordem = new OrdemServico(nomeCliente, veiculo, 10);
+                    OrdemServico ordem = new OrdemServico(nomeCliente, veiculo, 10); // Máximo de serviços por ordem fixo em 10
 
                     String continuar = "S";
                     while (continuar.equalsIgnoreCase("S")) {
@@ -80,24 +81,28 @@ public class Main {
 
                     gerenciador.addOrdem(ordem);
                     break;
-
+                
                 case 2:
-                    gerenciador.listarOrdens();
+                    System.out.println();
                     break;
 
                 case 3:
+                    gerenciador.listarOrdens();
+                    break;
+
+                case 4:
                     System.out.print("\nDigite o início do nome do cliente: ");
                     String inicioNome = lerString();
                     gerenciador.buscarOrdensNome(inicioNome);
                     break;
 
-                case 4:
+                case 5:
                     System.out.print("\nDigite a placa do veículo: ");
                     String placaBusca = lerString();
                     gerenciador.buscarOrdensPlaca(placaBusca);
                     break;
 
-                case 5:
+                case 6:
                     System.out.println("Encerrando o programa...");
                     break;
 

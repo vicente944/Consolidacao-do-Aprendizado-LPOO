@@ -15,8 +15,16 @@ public class OrdemServico {
         return nomeCliente;
     }
 
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
     public Veiculo getVeiculoCliente() {
         return veiculoCliente;
+    }
+
+    public void setVeiculoCliente(Veiculo veiculoCliente) {
+        this.veiculoCliente = veiculoCliente;
     }
 
     public void exibirResumo() { // Deve exibir resumo incluindo os serviços associados
@@ -31,8 +39,6 @@ public class OrdemServico {
         System.out.println("Valor total: R$" + this.calcValorTotal());
     }
 
-
-    // (Funcionando) Calcula o valor total dos servicos adicionados
     public double calcValorTotal() {
         double valorTotal = 0;
         for (int i = 0; i < numServicos; i++) {
@@ -42,27 +48,12 @@ public class OrdemServico {
         return valorTotal;
     }
 
-    // (Funcionando) Adiciona o servico ao array da OS
     public void addServico(Servico servico) {
-    if (numServicos < servicos.length) {
-        servicos[numServicos] = servico;
-        numServicos++;
-    }
-    else 
-        System.out.println("Erro: Limite de serviços para esta ordem foi atingido.");
-}
-
-    /*
-    Aplicar desconto - Em Standby
-    public void aplicDesc(double desconto) {
-        double margemInf = 0.00;
-        double margemSup = 100.00;
-        if (margemInf <= desconto && desconto <= margemSup) {
-        System.out.println("Valor do desconto: " + (desconto / 100 * valServ));
-        valServ = valServ - (desconto / 100 * valServ);
+        if (numServicos < servicos.length) {
+            servicos[numServicos] = servico;
+            numServicos++;
         }
-        else
-            System.out.println("Desconto invalido.");
+        else 
+            System.out.println("Erro: Limite de serviços para esta ordem foi atingido.");
     }
-        */
 }
