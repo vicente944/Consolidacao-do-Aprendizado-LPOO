@@ -7,6 +7,13 @@ public class GerencOrdens {
         this.qtdOrdens = 0;
     }
 
+    public int getQtdOrdens() {
+        return qtdOrdens;
+    }
+    public void setQtdOrdens(int qtdOrdens) {
+        this.qtdOrdens = qtdOrdens;
+    }
+
     public void addOrdem(OrdemServico ordem) {
         if (qtdOrdens < ordens.length) {
             ordens[qtdOrdens] = ordem;
@@ -59,5 +66,12 @@ public class GerencOrdens {
         if (!encontrou) {
             System.out.println("Nenhuma ordem encontrada com a placa: " + placaBuscada);
         }
+    }
+
+    public OrdemServico buscarOrdemPorIndice(int indice) {
+        if (indice >= 0 && indice < qtdOrdens) {
+            return ordens[indice];
+        }
+        return null;
     }
 }
