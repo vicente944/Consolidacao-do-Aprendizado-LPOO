@@ -18,18 +18,6 @@ public class Main {
     public static void main(String[] args) {
         GerencOrdens gerenciador = new GerencOrdens(100);
 
-        // Lista fixa de serviços disponíveis
-        Servico[] servicosDisponiveis = {
-            new Servico("Troca de óleo", 180.00),
-            new Servico("Balanceamento", 120.00),
-            new ServicoComPecas("Troca de pastilhas de freio", 150.00, 200.00),
-            new ServicoComPecas("Troca de correia dentada", 180.00, 250.00),
-            new ServicoPorHora("Alinhamento técnico", 50.00, 1, 50.00),
-            new ServicoPorHora("Revisão elétrica", 80.00, 2, 100.00),
-            new ServicoDiagnostico("Diagnóstico eletrônico", 120.00, false),
-            new ServicoDiagnostico("Diagnóstico de suspensão", 100.00, true)
-        };
-
         int opcao = 0;
 
         while (opcao != 6) {
