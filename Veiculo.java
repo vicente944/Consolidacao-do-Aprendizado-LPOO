@@ -3,6 +3,12 @@ public class Veiculo {
     private String modelo;
     private int ano;
 
+    public Veiculo(String placa, String modelo, int ano) {
+        this.placa = placa;
+        this.modelo = modelo;
+        this.ano = ano;
+    }
+
     public String getPlaca() {
         return placa;
     }
@@ -24,12 +30,6 @@ public class Veiculo {
     }
 
     public void setAno(int ano) {
-        this.ano = ano;
-    }
-
-    public Veiculo(String placa, String modelo, int ano) {
-        this.placa = placa;
-        this.modelo = modelo;
         this.ano = ano;
     }
 
