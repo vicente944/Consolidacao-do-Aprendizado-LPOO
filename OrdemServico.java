@@ -33,7 +33,10 @@ public class OrdemServico {
         System.out.println("\nServiços realizados: ");
         for (int i=0; i < this.numServicos; i++){
             if (this.servicos[i] != null){
-                System.out.println("-"+ this.servicos[i].getDescricao() + ": R$" + this.servicos[i].getValor());
+                System.out.println("-"+ this.servicos[i].getDescricao() + ": R$" + this.servicos[i].getValorBase());
+                System.out.println("Valor base: R$" + servicos[i].getValorBase());
+                if (servicos[i] instanceof ServicoComPecas) 
+                    System.out.println("Valor das peças: R$" + servicos[i].getValorPecas());
              } 
         }
         System.out.println("Valor total: R$" + this.calcValorTotal());
@@ -43,7 +46,7 @@ public class OrdemServico {
         double valorTotal = 0;
         for (int i = 0; i < numServicos; i++) {
             if (servicos[i] != null)
-                valorTotal += servicos[i].getValor();
+                valorTotal += servicos[i].getValorBase();
         }
         return valorTotal;
     }

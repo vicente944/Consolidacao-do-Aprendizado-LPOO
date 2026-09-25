@@ -1,10 +1,10 @@
 public class Servico {
     private String descricao;
-    private double valor;
+    private double valorBase;
 
-    public Servico(String descricao, double valor) {
+    public Servico(String descricao, double valorBase) {
         this.descricao = descricao;
-        this.valor = valor;
+        this.valorBase = valorBase;
     }
 
     public String getDescricao() {
@@ -15,15 +15,19 @@ public class Servico {
         this.descricao = descricao;
     }
 
-    public double getValor() {
-        return valor;
+    public double getValorBase() {
+        return valorBase;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setValorBase(double valorBase) {
+        this.valorBase = valorBase;
     }
 
     public void exibirInfo() {
-        System.out.println(this.descricao + " .......... R$ " + this.valor);
+        System.out.println(this.descricao + " .......... R$ " + this.valorBase);
         }
+
+    public double calcPrecoFinal(){
+        return valorBase;
+    }
 }

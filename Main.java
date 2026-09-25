@@ -18,14 +18,23 @@ public class Main {
     public static void main(String[] args) {
         GerencOrdens gerenciador = new GerencOrdens(100);
 
-        // Lista fixa de serviços disponíveis
-        Servico[] servicosDisponiveis = {
-            new Servico("Troca de óleo", 180.00),
-            new Servico("Alinhamento", 100.00),
-            new Servico("Balanceamento", 120.00),
-            new Servico("Troca de pastilhas de freio", 250.00),
-            new Servico("Revisão elétrica", 150.00)
-        };
+    Servico[] servicosDisponiveis = {
+    // 1. Serviços Comuns (Classe Base)
+    new Servico("Troca de óleo", 180.00),
+    new Servico("Balanceamento", 120.00),
+
+    // 2. Serviços com Peças (ServicoComPecas: descricao, valorBase, valorPecas)
+    new ServicoComPecas("Troca de pastilhas de freio", 150.00, 200.00),
+    new ServicoComPecas("Troca de correia dentada", 180.00, 250.00),
+
+    // 3. Serviços por Hora (ServicoPorHora: descricao, valorBase, horasTrabalhadas, valorHora)
+    new ServicoPorHora("Alinhamento técnico", 50.00, 1.0, 50.00),
+    new ServicoPorHora("Revisão elétrica", 80.00, 2.0, 100.00),
+
+    // 4. Diagnósticos (ServicoDiagnostico: descricao, valorBase, possuiReparo)
+    new ServicoDiagnostico("Diagnóstico eletrônico", 120.00, "n"),
+    new ServicoDiagnostico("Diagnóstico de suspensão", 100.00, "n")
+};
 
         int opcao = 0;
 
