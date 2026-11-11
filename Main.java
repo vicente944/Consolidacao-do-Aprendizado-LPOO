@@ -29,7 +29,7 @@ public class Main {
 
         while (opcao != 8) {
             try {
-                System.out.println("\n=== OFICINA BOX 42 ===");
+                System.out.println("\n=== VIKA CAR SERVICES ===");
                 System.out.println("1 - Criar ordem de serviço");
                 System.out.println("2 - Adicionar serviço à ordem");
                 System.out.println("3 - Listar ordens");
