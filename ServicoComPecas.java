@@ -1,35 +1,34 @@
-/*
- * Observação: Na Consolidação 3, Kauan Victor não teve acesso ao Classroom
- * devido a uma ausência por motivos de saúde. Apesar disso, participou do
- * desenvolvimento e contribuiu para a implementação deste projeto.
- */
+import ExcecoesPersonalizadas.*;
 
 public class ServicoComPecas extends Servico {
     private double valorPecas;
 
-    public ServicoComPecas(String descricao, double valorBase, double valorPecas) {
-        super(descricao, valorBase); // Chama o construtor da classe base Servico
-        this.valorPecas = valorPecas;
+    public ServicoComPecas(String descricao, double valorBase, double valorPecas) throws ValorInvalidoException {
+        super(descricao, valorBase);
+        setValorPecas(valorPecas);
     }
 
     public double getValorPecas() {
         return valorPecas;
     }
 
-    public void setValorPecas(double valorPecas) {
+    public void setValorPecas(double valorPecas) throws ValorInvalidoException {
+        if (valorPecas < 0) {
+            throw new ValorInvalidoException("O custo de peças não pode ser negativo.");
+        }
         this.valorPecas = valorPecas;
     }
 
     @Override
     public double calcularPrecoFinal() {
-        return getValorBase() + this.valorPecas;
+        return getValorBase() + valorPecas;
     }
 
     @Override
     public void exibirInformacoes() {
-        System.out.println(getDescricao());
-        System.out.printf("Valor base: R$ %.2f\n", getValorBase());
-        System.out.printf("Peças: R$ %.2f\n", this.valorPecas);
-        System.out.printf("Preço final: R$ %.2f\n", this.calcularPrecoFinal());
+        System.out.println(getDescricao() + " (Com Peças)");
+        System.out.printf("  Valor base: R$ %.2f\n", getValorBase());
+        System.out.printf("  Peças: R$ %.2f\n", valorPecas);
+        System.out.printf("  Preço final: R$ %.2f\n", calcularPrecoFinal());
     }
 }

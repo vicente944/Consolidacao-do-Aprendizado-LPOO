@@ -1,13 +1,9 @@
-/*
- * Observação: Na Consolidação 3, Kauan Victor não teve acesso ao Classroom
- * devido a uma ausência por motivos de saúde. Apesar disso, participou do
- * desenvolvimento e contribuiu para a implementação deste projeto.
- */
+import ExcecoesPersonalizadas.*;
 
 public class ServicoDiagnostico extends Servico {
     private boolean possuiReparo;
 
-    public ServicoDiagnostico(String descricao, double valorBase, boolean possuiReparo) {
+    public ServicoDiagnostico(String descricao, double valorBase, boolean possuiReparo) throws ValorInvalidoException {
         super(descricao, valorBase);
         this.possuiReparo = possuiReparo;
     }
@@ -22,17 +18,17 @@ public class ServicoDiagnostico extends Servico {
 
     @Override
     public double calcularPrecoFinal() {
-        if (this.possuiReparo) {
-            return getValorBase() * 0.50; // 50% de desconto caso o reparo seja realizado
+        if (possuiReparo) {
+            return getValorBase() * 0.50;
         }
         return getValorBase();
     }
 
     @Override
     public void exibirInformacoes() {
-        System.out.println(getDescricao());
-        System.out.printf("Valor base: R$ %.2f\n", getValorBase());
-        System.out.println("Reparo realizado: " + (this.possuiReparo ? "Sim" : "Não"));
-        System.out.printf("Preço final: R$ %.2f\n", this.calcularPrecoFinal());
+        System.out.println(getDescricao() + " (Diagnóstico)");
+        System.out.printf("  Valor base: R$ %.2f\n", getValorBase());
+        System.out.println("  Reparo realizado: " + (possuiReparo ? "Sim" : "Não"));
+        System.out.printf("  Preço final: R$ %.2f\n", calcularPrecoFinal());
     }
 }

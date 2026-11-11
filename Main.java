@@ -1,3 +1,4 @@
+import ExcecoesPersonalizadas.*;
 import java.util.Scanner;
 
 public class Main {
@@ -16,182 +17,171 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        GerencOrdens gerenciador = new GerencOrdens(100);
+        GerenciadorOrdens gerenciador;
+        try {
+            gerenciador = new GerenciadorOrdens(20);
+        } catch (ValorInvalidoException e) {
+            System.out.println("Erro crítico ao inicializar sistema: " + e.getMessage());
+            return;
+        }
 
         int opcao = 0;
 
-        while (opcao != 6) {
-            System.out.println("\n=== VIKA CAR SERVICES ===");
-            System.out.println("1. Cadastrar ordem de serviço");
-            System.out.println("2. Adicionar serviço à ordem");
-            System.out.println("3. Listar ordens de serviço");
-            System.out.println("4. Buscar ordens pelo início do nome do cliente");
-            System.out.println("5. Buscar ordem pela placa do veículo");
-            System.out.println("6. Sair");
-            System.out.print("Escolha uma opção: ");
+        while (opcao != 8) {
+            try {
+                System.out.println("\n=== OFICINA BOX 42 ===");
+                System.out.println("1 - Criar ordem de serviço");
+                System.out.println("2 - Adicionar serviço à ordem");
+                System.out.println("3 - Listar ordens");
+                System.out.println("4 - Buscar ordens por cliente");
+                System.out.println("5 - Buscar ordens por placa");
+                System.out.println("6 - Aplicar desconto");
+                System.out.println("7 - Finalizar ordem");
+                System.out.println("8 - Sair");
+                System.out.print("Escolha uma opção: ");
 
-            opcao = lerInteiro();
+                opcao = lerInteiro();
 
-            switch (opcao) {
-                case 1:
-                    System.out.print("\nNome do cliente: ");
-                    String nomeCliente = lerString();
+                switch (opcao) {
+                    case 1:
+                        System.out.print("\nNúmero da Ordem: ");
+                        int numeroOS = lerInteiro();
 
-                    System.out.print("Placa do veículo: ");
-                    String placa = lerString();
+                        System.out.print("Nome do cliente: ");
+                        String nomeCliente = lerString();
 
-                    System.out.print("Modelo: ");
-                    String modelo = lerString();
+                        System.out.print("Placa do veículo: ");
+                        String placa = lerString();
 
-                    System.out.print("Ano: ");
-                    int ano = lerInteiro();
+                        System.out.print("Modelo: ");
+                        String modelo = lerString();
 
-                    Veiculo veiculo = new Veiculo(placa, modelo, ano);
-                    OrdemServico ordem = new OrdemServico(nomeCliente, veiculo, 10); // Máximo de serviços por ordem fixo em 10
+                        System.out.print("Ano: ");
+                        int ano = lerInteiro();
 
-                    String continuar = "S";
-                    while (continuar.equalsIgnoreCase("S")) {
-                        System.out.println("\n=== TIPO DE SERVIÇO ===");
-                        System.out.println("1. Serviço comum");
-                        System.out.println("2. Serviço com peças");
-                        System.out.println("3. Serviço por hora");
-                        System.out.println("4. Diagnóstico");
-                        System.out.print("Escolha uma opção: ");
-                        int tipo = lerInteiro();
+                        System.out.print("Capacidade máxima de serviços nesta ordem: ");
+                        int capServicos = lerInteiro();
 
-                        if (tipo < 1 || tipo > 4) {
-                            System.out.println("Opção inválida! Tente novamente.");
-                        } 
-                        else {
-                            System.out.print("Descrição do serviço: ");
-                            String desc = lerString();
+                        Veiculo veiculo = new Veiculo(placa, modelo, ano);
+                        OrdemServico novaOrdem = new OrdemServico(numeroOS, nomeCliente, veiculo, capServicos);
+                        
+                        gerenciador.adicionarOrdem(novaOrdem);
+                        System.out.println("Ordem nº " + numeroOS + " criada com sucesso!");
+                        break;
 
-                            System.out.print("Valor base: R$ ");
-                            double vBase = lerDecimal();
+                    case 2:
+                        System.out.print("\nDigite o número da Ordem de Serviço: ");
+                        int numOS = lerInteiro();
+                        OrdemServico osEncontrada = gerenciador.buscarPorNumero(numOS);
 
-                            Servico novoServico = null;
-
-                            switch (tipo) {
-                                case 1:
-                                    novoServico = new Servico(desc, vBase);
-                                    break;
-
-                                case 2:
-                                    System.out.print("Valor das peças: R$ ");
-                                    double vPecas = lerDecimal();
-                                    novoServico = new ServicoComPecas(desc, vBase, vPecas);
-                                    break;
-
-                                case 3:
-                                    System.out.print("Horas trabalhadas: ");
-                                    int horas = lerInteiro();
-                                    System.out.print("Valor por hora: R$ ");
-                                    double vHora = lerDecimal();
-                                    novoServico = new ServicoPorHora(desc, vBase, horas, vHora);
-                                    break;
-
-                                case 4:
-                                    System.out.print("O cliente realizou o reparo? (S/N): ");
-                                    boolean rep = lerString().equalsIgnoreCase("S");
-                                    novoServico = new ServicoDiagnostico(desc, vBase, rep);
-                                    break;
-                            }
-
-                            if (novoServico != null) {
-                                ordem.addServico(novoServico);
-                                System.out.println("Serviço adicionado com sucesso!");
-                            }
+                        if (osEncontrada == null) {
+                            System.out.println("Erro: Ordem de serviço nº " + numOS + " não existe!");
+                            break;
                         }
-                        System.out.print("\nDeseja adicionar outro serviço a esta ordem? (S/N): ");
-                        continuar = lerString();
-                    }
-                    gerenciador.addOrdem(ordem);
-                    break;
-                
-                case 2:
-                    if (gerenciador.getQtdOrdens() == 0) {
-                        System.out.println("\nNenhuma ordem cadastrada! Crie uma ordem primeiro.");
+
+                        System.out.println("\n=== TIPO DE SERVIÇO ===");
+                        System.out.println("1 - Serviço com peças");
+                        System.out.println("2 - Serviço por hora");
+                        System.out.println("3 - Diagnóstico");
+                        System.out.print("Escolha o tipo: ");
+                        int tipoServico = lerInteiro();
+
+                        System.out.print("Descrição do serviço: ");
+                        String desc = lerString();
+
+                        System.out.print("Valor base: R$ ");
+                        double vBase = lerDecimal();
+
+                        Servico novoServico = null;
+
+                        switch (tipoServico) {
+                            case 1:
+                                System.out.print("Valor das peças: R$ ");
+                                double vPecas = lerDecimal();
+                                novoServico = new ServicoComPecas(desc, vBase, vPecas);
+                                break;
+                            case 2:
+                                System.out.print("Horas trabalhadas: ");
+                                double horas = lerDecimal();
+                                System.out.print("Valor por hora: R$ ");
+                                double vHora = lerDecimal();
+                                novoServico = new ServicoPorHora(desc, vBase, horas, vHora);
+                                break;
+                            case 3:
+                                System.out.print("O cliente realizou o reparo? (S/N): ");
+                                boolean rep = lerString().equalsIgnoreCase("S");
+                                novoServico = new ServicoDiagnostico(desc, vBase, rep);
+                                break;
+                            default:
+                                System.out.println("Tipo de serviço inválido!");
+                        }
+
+                        if (novoServico != null) {
+                            osEncontrada.adicionarServico(novoServico);
+                            System.out.println("Serviço adicionado com sucesso à Ordem nº " + numOS + "!");
+                        }
                         break;
-                    }
 
-                    gerenciador.listarOrdens();
-                    System.out.print("\nInforme o número da ordem que deseja alterar (1 a " + gerenciador.getQtdOrdens() + "): ");
-                    int numOrdem = lerInteiro();
-
-                    OrdemServico ordemSelecionada = gerenciador.buscarOrdemPorIndice(numOrdem - 1);
-                    if (ordemSelecionada == null) {
-                        System.out.println("Ordem inválida!");
+                    case 3:
+                        gerenciador.listarOrdens();
                         break;
-                    }
 
-                    System.out.println("\n=== TIPO DE SERVIÇO ===");
-                    System.out.println("1 - Serviço comum");
-                    System.out.println("2 - Serviço com peças");
-                    System.out.println("3 - Serviço por hora");
-                    System.out.println("4 - Diagnóstico");
-                    System.out.print("Escolha o tipo: ");
-                    int tipo = lerInteiro();
+                    case 4:
+                        System.out.print("\nDigite o início do nome do cliente: ");
+                        String buscaNome = lerString();
+                        gerenciador.buscarPorInicioDoNome(buscaNome);
+                        break;
 
-                    System.out.print("Descrição do serviço: ");
-                    String desc = lerString();
-                    System.out.print("Valor base: R$ ");
-                    double vBase = lerDecimal();
+                    case 5:
+                        System.out.print("\nDigite a placa do veículo: ");
+                        String buscaPlaca = lerString();
+                        gerenciador.buscarPorPlaca(buscaPlaca);
+                        break;
 
-                    Servico novoServico = null;
+                    case 6:
+                        System.out.print("\nDigite o número da Ordem para aplicar desconto: ");
+                        int numOSDesc = lerInteiro();
+                        OrdemServico osDesc = gerenciador.buscarPorNumero(numOSDesc);
 
-                    switch (tipo) {
-                        case 1:
-                            novoServico = new Servico(desc, vBase);
+                        if (osDesc == null) {
+                            System.out.println("Erro: Ordem de serviço nº " + numOSDesc + " não existe!");
                             break;
-                        case 2:
-                            System.out.print("Valor das peças: R$ ");
-                            double vPecas = lerDecimal();
-                            novoServico = new ServicoComPecas(desc, vBase, vPecas);
+                        }
+
+                        System.out.print("Informe o percentual de desconto (0 a 100): ");
+                        double perc = lerDecimal();
+                        
+                        double novoTotal = osDesc.aplicarDesconto(perc);
+                        System.out.printf("Desconto aplicado! Novo total da Ordem nº %d: R$ %.2f\n", numOSDesc, novoTotal);
+                        break;
+
+                    case 7:
+                        System.out.print("\nDigite o número da Ordem que deseja finalizar: ");
+                        int numOSFim = lerInteiro();
+                        OrdemServico osFim = gerenciador.buscarPorNumero(numOSFim);
+
+                        if (osFim == null) {
+                            System.out.println("Erro: Ordem de serviço nº " + numOSFim + " não existe!");
                             break;
-                        case 3:
-                            System.out.print("Horas trabalhadas: ");
-                            int horas = lerInteiro();
-                            System.out.print("Valor por hora: R$ ");
-                            double vHora = lerDecimal();
-                            novoServico = new ServicoPorHora(desc, vBase, horas, vHora);
-                            break;
-                        case 4:
-                            System.out.print("O cliente realizou o reparo? (S/N): ");
-                            boolean rep = lerString().equalsIgnoreCase("S");
-                            novoServico = new ServicoDiagnostico(desc, vBase, rep);
-                            break;
-                        default:
-                            System.out.println("Tipo inválido!");
-                    }
+                        }
 
-                    if (novoServico != null) {
-                        ordemSelecionada.addServico(novoServico);
-                        System.out.println("Serviço adicionado com sucesso!");
-                    }
-                    break;
+                        osFim.finalizar();
+                        System.out.println("Ordem nº " + numOSFim + " finalizada com sucesso!");
+                        break;
 
-                case 3:
-                    gerenciador.listarOrdens();
-                    break;
+                    case 8:
+                        System.out.println("Encerrando o sistema...");
+                        break;
 
-                case 4:
-                    System.out.print("\nDigite o início do nome do cliente: ");
-                    String inicioNome = lerString();
-                    gerenciador.buscarOrdensNome(inicioNome);
-                    break;
-
-                case 5:
-                    System.out.print("\nDigite a placa do veículo: ");
-                    String placaBusca = lerString();
-                    gerenciador.buscarOrdensPlaca(placaBusca);
-                    break;
-
-                case 6:
-                    System.out.println("Encerrando o programa...");
-                    break;
-
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                    default:
+                        System.out.println("Opção inválida! Digite um número entre 1 e 8.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("ERRO DE LEITURA: Entrada numérica inválida. Digite números corretamente.");
+            } catch (ValorInvalidoException | OrdemVaziaException | CapacidadeExcedidaException | OrdemFinalizadaException e) {
+                System.out.println("ERRO DE REGRA DE NEGÓCIO: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("ERRO INESPERADO: " + e.getMessage());
             }
         }
     }
